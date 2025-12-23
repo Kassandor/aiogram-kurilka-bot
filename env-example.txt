@@ -1,1 +1,2 @@
+# Create .env file in project-root directory
 TELEGRAM_TOKEN=<bot_id>:<secret_key>

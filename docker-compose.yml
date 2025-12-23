@@ -1,0 +1,9 @@
+services:
+  kurilka-bot:
+    container_name: 'kurilka-bot'
+    build:
+      context: .
+      dockerfile: .ci/Dockerfile
+    env_file:
+      - .env
+    restart: on-failure

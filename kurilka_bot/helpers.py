@@ -47,8 +47,8 @@ class BotHelper:
                 previous_smoke_time = cls._last_poll_time.get(chat_id).strftime("%H:%M")
 
                 await message.answer(
-                    f'Уважаемый {message.from_user.full_name}! Перекур был в {previous_smoke_time}.'
-                    f'Следующий перекур только через {max(1, int(cooldown_minutes))}'
+                    f'Уважаемый {message.from_user.full_name}! Перекур был в {previous_smoke_time}.\n'
+                    f'Следующий перекур только через {max(1, int(cooldown_minutes))} минут'
                 )
                 return
 

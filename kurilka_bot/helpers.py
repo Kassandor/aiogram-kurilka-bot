@@ -18,8 +18,7 @@ class BotHelper:
 
     @classmethod
     async def get_poll_cooldown(cls, chat_id: int) -> timedelta | None:
-        async with cls._lock:
-            last_poll_time = cls._last_poll_time.get(chat_id)
+        last_poll_time = cls._last_poll_time.get(chat_id)
 
         if not last_poll_time:
             return None
@@ -41,23 +40,23 @@ class BotHelper:
         """
 
         chat_id = message.chat.id
-        cooldown = await cls.get_poll_cooldown(chat_id)
-        if cooldown:
-            cooldown_minutes = cooldown.total_seconds() // 60
-            async with cls._lock:
+        async with cls._lock:
+            cooldown = await cls.get_poll_cooldown(chat_id)
+            if cooldown:
+                cooldown_minutes = cooldown.total_seconds() // 60
                 previous_smoke_time = cls._last_poll_time.get(chat_id).strftime("%H:%M")
 
-            await message.answer(
-                f'Уважаемый {message.from_user.full_name}! Перекур был в {previous_smoke_time}.'
-                f'Следующий перекур только через {max(1, int(cooldown_minutes))}'
-            )
-            return
+                await message.answer(
+                    f'Уважаемый {message.from_user.full_name}! Перекур был в {previous_smoke_time}.'
+                    f'Следующий перекур только через {max(1, int(cooldown_minutes))}'
+                )
+                return
 
-        await bot.send_poll(
-            chat_id=message.chat.id,
-            question=f"Предложение от {message.from_user.full_name}: Пойдём курить? 🚬",
-            options=["Да", "Нет"],
-            is_anonymous=False,  # Голоса неанонимные
-            allows_multiple_answers=False,
-        )
-        cls._last_poll_time[chat_id] = datetime.now(UTC)
+            await bot.send_poll(
+                chat_id=message.chat.id,
+                question=f"Предложение от {message.from_user.full_name}: Пойдём курить? 🚬",
+                options=["Да", "Нет"],
+                is_anonymous=False,  # Голоса неанонимные
+                allows_multiple_answers=False,
+            )
+            cls._last_poll_time[chat_id] = datetime.now(UTC)

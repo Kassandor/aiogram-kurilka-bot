@@ -13,7 +13,7 @@ class BotHelper:
     """
 
     _last_poll_time: dict[int, datetime] = {}
-    _poll_cooldown = settings.POLL_SMOKE_COLDOWN_MINUTES
+    _poll_cooldown = timedelta(minutes=settings.POLL_SMOKE_COLDOWN_MINUTES)
     _lock = asyncio.Lock()
 
     @classmethod
